@@ -1,3 +1,3 @@
-Michael Nielson's Neural Network and Deep Learning re-producing code and book exercises.
+Re-producing Michael Nielson's Neural Network and Deep Learning code and book exercises. 
 
 For self-learning purpose ONLY.
