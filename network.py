@@ -23,7 +23,7 @@ class Network(object):
         '''
         self.sizes = sizes
         self.basis = [np.random.randn(y,1) for y in sizes[1:]]
-        self.weights = [np.random.randn(x,y) for x,y in zip(sizes[:-1], sizes[1:])]
+        self.weights = [np.random.randn(y,x) for x,y in zip(sizes[:-1], sizes[1:])]
 
 
     def feedforward(self, a):
@@ -32,7 +32,7 @@ class Network(object):
         '''
         for b, w in zip(self.basis, self.weights):
             a = sigmoid(np.dot(w,a) + b)
-            return a
+        return a
 
     def SGD(self, training_data, epochs, mini_batch_size, eta, test_data = None):
         if test_data:
@@ -84,12 +84,13 @@ class Network(object):
             activation = sigmoid(z)
             activations.append(activation)
         # backward pass
-        delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(zs[-1])
+        delta = self.cost_derivative(activations[-1], y) * \
+            sigmoid_prime(zs[-1])
         nabla_b[-1] = delta
         nabla_w[-1] = np.dot(delta, activations[-2].transpose())
         
         for l in range(2, self.num_layers):
-            z = zs[-1]
+            z = zs[-l]
             sp = sigmoid_prime(z)
             delta = np.dot(self.weights[-l+1].transpose(), delta) * sp
             nabla_b[-l] = delta
@@ -107,4 +108,4 @@ def sigmoid(z):
     return 1.0 / (1.0 + np.exp(-z))
 
 def sigmoid_prime(z):
-    return sigmoid(z) * (1 - sigmoid(-z))
+    return sigmoid(z) * (1 - sigmoid(z))
