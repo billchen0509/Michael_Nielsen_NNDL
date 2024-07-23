@@ -9,7 +9,7 @@ for a feedforward neural network. Gradients are calculated using backpropagation
 import random
 import numpy as np
 import time
-
+import mnist_loader
 ### initializa a Network object
 class Network(object):
     def __init__(self,sizes):
@@ -109,3 +109,7 @@ def sigmoid(z):
 
 def sigmoid_prime(z):
     return sigmoid(z) * (1 - sigmoid(z))
+
+training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
+net = Network([784, 30, 10])
+net.SGD(training_data, 30, 10, 3.0, test_data = test_data)
